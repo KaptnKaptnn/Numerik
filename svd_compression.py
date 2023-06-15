@@ -5,23 +5,27 @@ from PIL import Image
 
 
 def k_approx(k, u, s, vh):
-    for i in range(k, s.size):
-        s[i] = 0
+    s_new = [0] * s.size
+    for i in range(0, k):
+        s_new[i] = s[i]
 
-    print(s)
-    matrix = u @ np.diag(s) @ vh
+    matrix = u @ np.diag(s_new) @ vh
 
     return matrix
+
+
+def visualize_image(matrix):
+    im = Image.fromarray(matrix)
+    im.show()
 
 
 def main():
     image = misc.ascent()
     u, s, vh = np.linalg.svd(image)
 
-    print(s)
-    im = Image.fromarray(k_approx(75, u, s, vh))
-    # im = Image.fromarray(image)
-    im.show()
+    visualize_image(k_approx(5, u, s, vh))
+    visualize_image(k_approx(20, u, s, vh))
+    visualize_image(k_approx(75, u, s, vh))
 
 
 if __name__ == "__main__":
